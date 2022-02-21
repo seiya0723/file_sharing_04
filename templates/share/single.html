@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>個別ページ</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    {% comment %}
+    <style>
+        i {
+            color:orange;
+            font-size:1.2rem;
+        }
+    </style>
+    {% endcomment %}
+
+    <link rel="stylesheet" href="{% static 'share/css/style.css' %}">
+
+</head>
+<body>
+
+<div class="border">
+    <div>{{ document.name }}</div>
+    <div>{{ document.avg_star }}</div>
+</div>
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <input id="star_radio_1" type="radio" name="star" value="1">
+    <input id="star_radio_2" type="radio" name="star" value="2">
+    <input id="star_radio_3" type="radio" name="star" value="3">
+    <input id="star_radio_4" type="radio" name="star" value="4">
+    <input id="star_radio_5" type="radio" name="star" value="5">
+
+    <div class="star_radio_label_area">
+        <div class="star_radio_label_flex">
+            <label class="star_radio_label" for="star_radio_5"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+            <label class="star_radio_label" for="star_radio_4"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+            <label class="star_radio_label" for="star_radio_3"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+            <label class="star_radio_label" for="star_radio_2"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+            <label class="star_radio_label" for="star_radio_1"><div class="true_star" ><i class="fas fa-star"></i></div><div class="false_star"><i class="far fa-star"></i></div></label>
+        </div>
+    </div>
+
+    <textarea class="form-control" name="comment" maxlength="500"></textarea>
+    <input class="form-control btn btn-outline-primary" type="submit" value="送信">
+</form>
+
+{% for review in reviews %}
+<div class="border">
+
+    {% with range=''|center:review.star %}
+    <div>評価:{% for x in range %}<i class="fas fa-star"></i>{% endfor %}</div>
+    {% endwith %}
+
+    <div>{{ review.star }}</div>
+    <div>投稿者:{{ review.user.last_name }}{{ review.user.first_name }}</div>
+    <div>{{ review.comment|linebreaksbr }}</div>
+</div>
+{% endfor %}
+
+</body>
+</html>
